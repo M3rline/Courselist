@@ -6,6 +6,7 @@ module.exports = {
     redirectHome: redirectHome
 };
 
+
 function renderHome(req, res) {
     var details = jsonfile.readFileSync('coursedetails.json');
     var term4 = details.filter(course => course.term === 4);
@@ -19,17 +20,10 @@ function renderHome(req, res) {
         term6: term6,
         helpers: {
             getCardClass: function(credits) {
-                let classes = ['blue-grey darken-1','purple darken-2','lime darken-2','deep-purple darken-2','teal darken-1','indigo darken-2' ];
-                let ch = parseInt(credits*4)||0;
-                ch = ch%6;
+                let classes = ['blue-grey darken-1', 'purple darken-2', 'lime darken-2', 'deep-purple darken-2', 'teal darken-1', 'indigo darken-2'];
+                let ch = parseInt(credits * 4) || 0;
+                ch = ch % 6;
                 return classes[ch];
-            },
-            getTruncatedText: function(rawText){
-                var sentences = nlp.text(rawText).sentences;
-                var skip = Math.ceil(sentences.length*0.1); //skip the first 10% sentences
-                var keep = 5; //retain 5 sentences max
-                var truncatedText = _.chain(sentences).rest(skip).first(keep).map(sentence=>sentence.text()).reduce((first,sent)=>first+sent);
-                return truncatedText.toString().substr(0,600)+'...';
             }
         }
     });

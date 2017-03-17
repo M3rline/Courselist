@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     rename = require("gulp-rename");
 var pdfText = require('pdf-text');
 var _ = require('underscore');
+var nlp = require('nlp_compromise');
 var sh = require('shorthash');
 
 var natural = require('natural');
@@ -20,7 +21,7 @@ var filesToDownload = './public/courses/**/*.pdf';
 
 // create a default task and just log a message
 gulp.task('default', ['createInfoJSON'], function() {
-       return gutil.log('Gulp is done');
+    return gutil.log('Gulp is done');
 
 });
 //TODO gulp series only available from Gulp 4
@@ -72,38 +73,47 @@ gulp.task('createInfoJSON', function() {
             // console.dir(contents);
             console.log(file.path);
             var buffer = contents;
-            var name = file.relative.replace(/\.\w+$/i,'').replace(/term-\d/,'').replace(/\\/g,'');
-            var error,object={};
-            pdfText(file.path, function(err, chunks) {              
-              try{
-                let string = chunks.join(' ');
-                //try to get keywords for course;
-                let credits = /(\d+(\.\d+)?)[^\w]+?credits?|credits?[^\w]+?(\d+(\.\d+)?)/i.exec(string);
-                credits = _.isEmpty(credits)?undefined:credits;
-                let profs = chunks.map(chunk=>/instructor[^\w]+(.*?)$|prof[^\w]+(.*?)$/i.test(chunk)?/instructor[^\w]+(.*?)$|prof[^\w]+(.*?)$/i.exec(chunk)[0]:false);
-               
-                let term = parseInt(file.path.split(/-/i)[1]);
-                                              
+            var name = file.relative.replace(/\.\w+$/i, '').replace(/term-\d/, '').replace(/\\/g, '');
+            var error, object = {};
+            pdfText(file.path, function(err, chunks) {
+                try {
+                    let string = chunks.join(' ');
+                    //try to get keywords for course;
+                    let credits = /(\d+(\.\d+)?)[^\w]+?credits?|credits?[^\w]+?(\d+(\.\d+)?)/i.exec(string);
+                    credits = _.isEmpty(credits) ? undefined : credits;
+                    let profs = chunks.map(chunk => /instructor[^\w]+(.*?)$|prof[^\w]+(.*?)$/i.test(chunk) ? /instructor[^\w]+(.*?)$|prof[^\w]+(.*?)$/i.exec(chunk)[0] : false);
 
-                let email = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/i.exec(string);
-                object.id = sh.unique(name);
-                object.course = name.replace(/-/g,' ');
-                object.contact = _.isEmpty(email)?'No email provided':email[0];
-                object.term = term;
-                object.credits = credits?parseFloat(credits[0].replace(/[^\d.]/g,'')):0;
-                object.credits = object.credits>2?0:object.credits;
-                object.rawText = string;
-                object.pdf = file.relative.replace(/\\/g,'/');                
-              }catch(e){
-                error = e;
-                console.log('Errored out!');
-                console.error(error);
-              }finally{
-                final = final+JSON.stringify(object)+",";
-                return cb(error, final);
-              }                
+                    let term = parseInt(file.path.split(/-/i)[1]);
+
+
+                    let email = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/i.exec(string);
+                    object.id = sh.unique(name);
+                    object.course = name.replace(/-/g, ' ');
+                    object.contact = _.isEmpty(email) ? 'No email provided' : email[0];
+                    object.term = term;
+                    object.credits = credits ? parseFloat(credits[0].replace(/[^\d.]/g, '')) : 0;
+                    object.credits = object.credits > 2 ? 0 : object.credits;
+                    object.rawText = string;
+                    object.pdf = file.relative.replace(/\\/g, '/');
+                    object.summary = summarize(string);
+                } catch (e) {
+                    error = e;
+                    console.log('Errored out!');
+                    console.error(error);
+                } finally {
+                    final = final + JSON.stringify(object) + ",";
+                    return cb(error, final);
+                }
             });
         }, ''))
         .pipe(rename('coursedetails.txt'))
         .pipe(gulp.dest('.'));
 });
+
+function summarize(rawText) {
+    var sentences = nlp.text(rawText).sentences;
+    var skip = Math.ceil(sentences.length * 0.1); //skip the first 10% sentences
+    var keep = 5; //retain 5 sentences max
+    var truncatedText = _.chain(sentences).rest(skip).first(keep).map(sentence => sentence.text()).reduce((first, sent) => first + sent);
+    return truncatedText.toString().substr(0, 600) + '...';
+}
