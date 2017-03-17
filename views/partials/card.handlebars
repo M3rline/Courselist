@@ -1,0 +1,20 @@
+<div class="card {{getCardClass this.credits}}" data-id="{{this.id}}">
+    <div class="card-content white-text" data-fulltext="{{this.rawText}}" data-name="{{this.course}}">
+        <span class="card-title">{{this.course}}</span>
+        <div class="row">
+            <div class="col s5">
+                <small><em>Term {{this.term}}</em></small>
+            </div>            
+            <div class="col s7 right-align">
+                <div class="chip">
+                    <small>{{this.contact}}</small>
+                </div>
+            </div>
+        </div>
+        <p class="truncated-text">{{getTruncatedText this.rawText}}</p>
+    </div>
+    <div class="card-action">
+        <a href="/courses/{{this.pdf}}"> <i class="fa fa-file-pdf-o"></i> Download </a>
+        <a href="/course/{{this.id}}" class="right-align"> <i class="fa fa-send"></i> Read More</a>
+    </div>
+</div>

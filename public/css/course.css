@@ -1,0 +1,42 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.rateit-reset{
+  display: none !important;
+}
+
+.wrapper{
+    height:100%;
+    min-height: 100%;
+}
+
+/** Star rating images **/
+div.bigstars div.rateit-range
+{
+    background: url(star-grey.png);
+    height: 32px;
+}
+ 
+div.bigstars div.rateit-hover
+{
+    background: url(star-red.png);
+}
+ 
+div.bigstars div.rateit-selected
+{
+    background: url(star-red.png);
+}
+ 
+div.bigstars div.rateit-reset
+{
+    background: url(star-grey.png);
+    width: 32px;
+    height: 32px;
+}
+ 
+div.bigstars div.rateit-reset:hover
+{
+    background: url(star-grey.png);
+}

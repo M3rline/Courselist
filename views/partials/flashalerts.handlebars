@@ -1,0 +1,21 @@
+{{#if messages.info}}
+<div class="alert alert-info fadeIn animated fade" role="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>HEADS UP!</strong> {{messages.info}}
+</div>
+{{/if}} {{#if messages.success}}
+<div class="alert alert-success fadeIn animated fade" role="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>HEADS UP!</strong> {{messages.success}}
+</div>
+{{/if}} {{#if messages.warning}}
+<div class="alert alert-warning fadeIn animated fade" role="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>HEADS UP!</strong> {{messages.warning}}
+</div>
+{{/if}} {{#if messages.error}}
+<div class="alert alert-danger fadeIn animated fade" role="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>HEADS UP!</strong> {{messages.error}}
+</div>
+{{/if}}

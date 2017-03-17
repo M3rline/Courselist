@@ -1,0 +1,44 @@
+
+/*!
+ * Start Bootstrap - Freelancer Bootstrap Theme (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Satisfy');
+body {
+  overflow-x: hidden;
+  font-family: Montserrat;
+}
+
+nav .nav-wrapper form,
+nav .nav-wrapper form .input-field {
+  height: 100%;
+}
+
+#searchbar {
+  position: fixed !important;
+  left: 10px;
+  bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 350px;
+  padding: 10px 10px 0px 10px;
+  z-index: 10000;
+}
+
+#search {
+  width: 90% !important;
+}
+
+.wrapper{
+  position:relative;
+}
+
+.card .card-content p {
+  max-height: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  font-size:smaller;
+}

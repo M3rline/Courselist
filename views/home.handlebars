@@ -1,0 +1,37 @@
+<!-- Navigation -->
+<link rel="stylesheet" href="/css/home.css">
+<nav class="nav-extended">
+    <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">PGP II Courses Website</a>
+        <a href="#" data-activates="sidenav" class="button-collapse"><i class="fa fa-bars"></i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/pages/login"><i class="fa fa-user"></i></a></li>
+            <li><a href="/pages/acadscouncil"><i class="fa fa-mortar-board"></i></a></li>
+            <li><a href="/pages/biddingpage"><i class="fa fa-gavel"></i></a></li>
+        </ul>
+        <ul class="side-nav" id="sidenav">
+            <li><a href="/pages/login"><i class="fa fa-user"></i> Login</a></li>
+            <li><a href="/pages/acadscouncil"><i class="fa fa-mortar-board"></i> Acads Council</a></li>
+            <li><a href="/pages/biddingpage"><i class="fa fa-auction"></i> Bidding Page</a></li>
+        </ul>
+    </div>
+    <div class="nav-content">
+        <ul class="tabs tabs-transparent">
+            <li class="tab"><a href="#allcourses">All Courses</a></li>
+            <li class="tab"><a href="#term4">Term 4</a></li>
+            <li class="tab"><a class="active" href="#term5">Term 5</a></li>
+            <li class="tab"><a href="#term6">Term 6</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="wrapper">
+    <div class="search-wrapper card" id="searchbar">
+        <i class="fa fa-search"></i>
+        <input id="search" id="icon_prefix" type="text" class="validate" placeholder="Search by Course Name or Outline"><i class="fa fa-close" id="clear-search"></i>
+    </div>
+    <div id="allcourses" class="col s12">{{>courselist data=courses}}</div>
+    <div id="term4" class="col s12">{{>courselist data=term4}}</div>
+    <div id="term5" class="col s12">{{>courselist data=term5}}</div>
+    <div id="term6" class="col s12">{{>courselist data=term6}}</div>
+</div>
+<script src="/js/home.js"></script>
