@@ -46,6 +46,7 @@ app.set('views', __dirname + '/views');
 app.get('/', homecontroller.redirectHome);
 app.get('/home', homecontroller.renderHome);
 app.get('/course/:id',coursecontroller.renderCourse);
+app.get('/pages/:pagename',homecontroller.renderPage);
 
 var server = app.listen(port, function() {
     postload(function(err, message) {

@@ -5,8 +5,8 @@ module.exports = {
 };
 
 function renderCourse(req, res) {    
-    var course = json.find(obj => {
-        var json = jsonfile.readFileSync('coursedetails.json');
+    var json = jsonfile.readFileSync('coursedetails.json');
+    var course = json.find(obj => {        
         return obj.id === req.params.id;
     });
     if (!course)

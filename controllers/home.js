@@ -3,7 +3,8 @@ var nlp = require('nlp_compromise');
 var _ = require('underscore');
 module.exports = {
     renderHome: renderHome,
-    redirectHome: redirectHome
+    redirectHome: redirectHome,
+    renderPage: renderPage
 };
 
 
@@ -34,5 +35,5 @@ function redirectHome(req, res) {
 }
 
 function renderPage(req, res) {
-    res.status(202).send('Sorry ' + req.params.pagename + ' isnt quite ready yet! Go <a href="/home">Home</a>')
+    res.status(202).send('Sorry ' + req.params.pagename + ' isnt quite ready yet! Go <a href="/home">Home</a>');
 }
